@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+    <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+    <!-- Contenido específico de la página de inicio -->
+    <div class="text-center main p-3">
+
+        <div class="fixed-bottom text-end me-4 mb-4">
+            <a th:href="@{/grupos/nuevo}" class="btn btn-add rounded-circle p-3" style="width: 75px; height: 75px;">
+                <i class="bi bi-plus" style="font-size: 24px;"></i>
+            </a>
+        </div>
+
+
+        <div th:if="${successMessage != null and successMessage != ''}" class="alert alert-success text-center">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+
+        <!--Se despliegan las "Cards" que conteienen a los grupos-->
+        <div th:if="${selectGrupo != null && !selectGrupo.isEmpty()}">
+            <div class="row g-3 align-items-start">
+                <div class="col-lg-3 col-md-6 col-sm-12" th:each="grupo : ${selectGrupo}">
+                    <div class="card text-bg-light mb-3" style="width: 100%; cursor: pointer;">
+                        <a th:href="@{/grupos/info/{id} (id=${grupo.idGrupo})}" class="text-decoration-none text-dark">
+                            <div class="card-body">
+                                <h2 class="card-text" th:text="${grupo.nombreGrupo}"></h2>
+                                <p class="mt-2">
+                                    <strong>Asignatura:</strong>
+                                    <span th:text="${grupo.asignatura.nombreAsignatura}"></span>
+                                </p>
+                            </div>
+                        </a>
+                        <div class="card-footer text-center">
+                            <a th:href="@{/grupos/modificar/{id} (id=${grupo.idGrupo})}" class="btn btn-add">
+                                Modificar <i class="fas fa-pen-nib"></i>
+                            </a>
+                            <a th:href="@{/grupos/eliminar/{id} (id=${grupo.idGrupo})}" class="btn btn-danger">
+                                Eliminar <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <p th:if="${selectGrupo == null || selectGrupo.isEmpty()}" class="text-center text-muted">
+            No hay grupos disponibles en este momento. ¡Crea tu primer grupo para comenzar!
+        </p>
+
+
+
+    </div>
+
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+
+
+
+</body>
+</html>

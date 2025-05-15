@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+    <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+
+        <div class="text-center main p-3">
+         <!-- Contenido específico de la página de inicio -->
+          <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body">
+              <!-- Ícono grande -->
+              <i class="bi bi-person-circle" style="font-size: 5rem; color: #564984;"></i>
+              <hr>
+              <h5 class="card-title">Perfil del Profesor</h5>
+              <p class="card-text">Seleccione una opción:</p>
+              <!-- Vínculos a cambiar contraseña y cerrar sesión -->
+              <a href="#" class="btn btn-password d-block mb-2">Cambiar Contraseña</a>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-closesession d-block">
+                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                    </button>
+                </form>
+
+            </div>
+          </div>
+        </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+</body>
+</html>

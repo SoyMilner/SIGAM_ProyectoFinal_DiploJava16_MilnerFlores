@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+  <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+
+  <div class="text-center main p-3">
+    <div class="container d-flex justify-content-center">
+      <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+        <h1 class="card-header text-center"><strong>Agregar Nuevo Grupo</strong></h1>
+
+        <div th:if="${successMessage != null}" class="alert alert-success text-center">
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage != null}" class="alert alert-danger text-center">
+          <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/grupos/guardar}" th:object="${grupo}" method="post">
+          <input type="hidden" th:field="*{idGrupo}"/>
+
+          <div class="mb-3">
+            <label for="nombreGrupo" class="form-label">Nombre del Grupo</label>
+            <input type="text" id="nombreGrupo" th:field="*{nombreGrupo}" class="form-control"
+                   required
+                   oninvalid="this.setCustomValidity('Por favor, introduce un nombre para el grupo.')"
+                   oninput="this.setCustomValidity('')">
+            <p th:if="${#fields.hasErrors('nombreGrupo')}" th:errors="*{nombreGrupo}" class="alert alert-danger mt-3"></p>
+          </div>
+
+          <div class="mb-3">
+            <label for="selectAsignatura" class="form-label">Asignatura</label>
+            <select class="form-select" id="selectAsignatura" th:field="*{asignatura.id}">
+              <option value="" selected>Seleccione una asignatura</option>
+              <option th:each="sel : ${selectAsignatura}" th:value="${sel.id}" th:text="${sel.nombreAsignatura}"></option>
+            </select>
+            <small class="form-text text-muted">¿No encuentras tu asignatura? Agrégala aquí:</small>
+            <input type="text" class="form-control mt-2" id="newAsignatura" name="newAsignatura" placeholder="Ingresa una nueva asignatura">
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-add">Guardar</button>
+            <a th:href="@{/index}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(e) {
+      const selectAsignatura = document.getElementById('selectAsignatura').value;
+      const newAsignatura = document.getElementById('newAsignatura').value.trim();
+
+      if (!selectAsignatura && newAsignatura === '') {
+          e.preventDefault();
+          alert('Por favor, selecciona una asignatura o ingresa una nueva.');
+      }
+
+      if (selectAsignatura && newAsignatura !== '') {
+          e.preventDefault();
+          alert('Por favor, selecciona una asignatura o ingresa una nueva, pero no ambas.');
+      }
+  });
+</script>
+
+</body>
+</html>

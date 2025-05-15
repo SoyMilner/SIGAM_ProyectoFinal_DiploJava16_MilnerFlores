@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:fragment="head">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/iconos/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <link th:href="@{/css/sidebar.css}" rel="stylesheet">
+  <title>SIGAM</title>
+</head>
+
+<body>
+
+  <!--Barra Lateral de Navegación-->
+  <div class="wrapper">
+    <aside id="sidebar" th:fragment="navbar">
+      <div class="d-flex">
+        <button class="toggle-btn" type="button">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="sidebar-logo">
+          <a th:href="@{/index}">SIGAM</a>
+        </div>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-item">
+          <a th:href="@{/index}" class="sidebar-link">
+            <i class="bi bi-house-fill"></i>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a th:href="@{/trabajos}" class="sidebar-link">
+            <i class="bi bi-pencil-fill"></i>
+            <span>Trabajos Asignados</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+             data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+            <i class="bi bi-person-video3"></i>
+            <span>Grupos (in dev)</span>
+          </a>
+          <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+            <li class="sidebar-item">
+              <a th:href="@{/infoGrupo/Grupo 1}" class="sidebar-link">Grupo 1 (in dev)</a>
+            </li>
+            <li class="sidebar-item">
+              <a th:href="@{/infoGrupo/Grupo 2}" class="sidebar-link">Grupo 2 (in dev)</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <a th:href="@{/profile}" class="sidebar-link">
+          <i class="bi bi-person-circle"></i>
+          <span>Perfil</span>
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+
+<footer th:fragment="footer">
+  <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/sidebar.js}"></script>
+</footer>
+
+</body>
+</html>

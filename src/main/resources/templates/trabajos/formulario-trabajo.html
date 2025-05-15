@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+  <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+
+  <div class="text-center main p-3">
+    <div class="container d-flex justify-content-center">
+      <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+        <h1 class="card-header text-center"><strong>Agregar Nuevo Trabajo</strong></h1>
+
+        <div th:if="${successMessage != null}" class="alert alert-success text-center">
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage != null}" class="alert alert-danger text-center">
+          <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/trabajos/guardar}" th:object="${trabajo}" method="post">
+          <input type="hidden" th:field="*{idTrabajo}"/>
+
+          <div class="mb-3">
+            <label for="nombreTrabajo" class="form-label">Nombre del Trabajo</label>
+            <input type="text" id="nombreTrabajo" th:field="*{nombreTrabajo}" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="descripcionTrabajo" class="form-label">Descripción</label>
+            <textarea id="descripcionTrabajo" th:field="*{descripcion}" class="form-control"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="grupo" class="form-label">Grupo</label>
+            <select id="grupo" class="form-select" th:field="*{grupo.idGrupo}" required>
+              <option value="" selected>Seleccione un grupo</option>
+              <option th:each="g : ${listaGrupos}" th:value="${g.idGrupo}" th:text="${g.nombreGrupo}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="tipoTrabajo" class="form-label">Tipo de Trabajo</label>
+            <select id="tipoTrabajo" class="form-select" th:field="*{tipoTrabajo.idTipoTrabajo}">
+              <option value="" selected>Seleccione un tipo</option>
+              <option th:each="t : ${listaTiposTrabajo}" th:value="${t.idTipoTrabajo}" th:text="${t.nombreTipoTrabajo}"></option>
+            </select>
+            <small class="form-text text-muted">¿No encuentras el tipo de trabajo? Agrégalo aquí:</small>
+            <input type="text" class="form-control mt-2" id="newTipoTrabajo" name="newTipoTrabajo" placeholder="Ingresa un nuevo tipo de trabajo">
+          </div>
+
+          <div class="mb-3">
+            <label for="fechaAsignacion" class="form-label">Fecha de Asignación</label>
+            <input type="date" id="fechaAsignacion" th:field="*{fechaAsignacion}" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="fechaLimite" class="form-label">Fecha Límite</label>
+            <input type="date" id="fechaLimite" th:field="*{fechaLimite}" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="ponderacionFinal" class="form-label">Ponderación Final</label>
+            <input type="number" id="ponderacionFinal" th:field="*{ponderacionFinal}" class="form-control" step="0.01" min="0" max="100">
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-add">Guardar</button>
+            <a th:href="@{/trabajos}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(e) {
+      const selectTipoTrabajo = document.getElementById('tipoTrabajo').value;
+      const newTipoTrabajo = document.getElementById('newTipoTrabajo').value.trim();
+
+      // Validar que al menos uno de los campos esté lleno
+      if (!selectTipoTrabajo && newTipoTrabajo === '') {
+          e.preventDefault();
+          alert('Por favor, selecciona un tipo de trabajo o ingresa uno nuevo.');
+      }
+
+      // Validar que no se ingresen ambos campos a la vez
+      if (selectTipoTrabajo && newTipoTrabajo !== '') {
+          e.preventDefault();
+          alert('Por favor, selecciona un tipo de trabajo o ingresa uno nuevo, pero no ambos.');
+      }
+  });
+</script>
+
+</body>
+</html>

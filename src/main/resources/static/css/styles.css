@@ -1,0 +1,77 @@
+  /* Estilos personalizados para la paginación */
+  /*Cuando no está activo*/
+  .pagination .page-link {
+    color: #fff; /* Color del texto */
+    background-color: #9FA19F; /* Color de fondo (GRIS)*/
+    border: 1px solid #9FA19F; /* Color del borde */
+  }
+
+  .pagination .page-link:hover {
+    color: #fff; /* Color del texto al pasar el mouse */
+    background-color: #7F817F; /* Color de fondo al pasar el mouse (GRIS más oscuro)*/
+    border-color: #7F817F; /* Color del borde al pasar el mouse */
+  }
+
+ /*Cuando está activo*/
+  .pagination .page-item.active .page-link {
+    color: #fff; /* Color del texto en el elemento activo */
+    background-color: #7B5F9A; /* Color de fondo en el elemento activo (MORADO)*/
+    border-color: #7B5F9A; /* Color del borde en el elemento activo */
+  }
+
+  .pagination .page-item.active .page-link:hover {
+    color: #fff; /* Color del texto al pasar el mouse en el elemento activo */
+    background-color: #654D80; /* Color de fondo al pasar el mouse en el elemento activo (MORADO más oscuro)*/
+    border-color: #654D80; /* Color del borde al pasar el mouse en el elemento activo */
+  }
+
+
+/*Para los botones en el perfil*/
+  .btn-password{
+    color: #fff; /* Color del texto */
+    background-color: #9FA19F; /* Color de fondo (GRIS)*/
+    border: 1px solid #9FA19F; /* Color del borde */
+  }
+
+  .btn-password:hover {
+    color: #fff; /* Color del texto al pasar el mouse */
+    background-color: #7F817F; /* Color de fondo al pasar el mouse (GRIS más oscuro)*/
+    border-color: #7F817F; /* Color del borde al pasar el mouse */
+  }
+
+  .btn-closesession {
+    color: #fff; /* Color del texto en el elemento activo */
+    background-color: #7B5F9A; /* Color de fondo en el elemento activo (MORADO)*/
+    border-color: #7B5F9A; /* Color del borde en el elemento activo */
+  }
+
+  .btn-closesession:hover {
+    color: #fff; /* Color del texto al pasar el mouse en el elemento activo */
+    background-color: #654D80; /* Color de fondo al pasar el mouse en el elemento activo (MORADO más oscuro)*/
+    border-color: #654D80; /* Color del borde al pasar el mouse en el elemento activo */
+  }
+
+  .btn-password, .btn-closesession {
+      display: block; /* Ambos ocupan el ancho completo */
+      width: 100%; /* Asegura que ambos sean del mismo tamaño */
+      text-align: center;
+      padding: 0.5rem 0; /* Relleno interno para un tamaño uniforme */
+      font-size: 1rem; /* Mismo tamaño de fuente */
+      border-radius: 0.25rem;
+  }
+
+  .btn-password:hover, .btn-closesession:hover {
+      text-decoration: none; /* Remueve subrayado en el hover */
+  }
+
+    .btn-add {
+      color: #fff; /* Color del texto en el elemento activo */
+      background-color: #7B5F9A; /* Color de fondo en el elemento activo (MORADO)*/
+      border-color: #7B5F9A; /* Color del borde en el elemento activo */
+    }
+
+    .btn-add:hover {
+      color: #fff; /* Color del texto al pasar el mouse en el elemento activo */
+      background-color: #654D80; /* Color de fondo al pasar el mouse en el elemento activo (MORADO más oscuro)*/
+      border-color: #654D80; /* Color del borde al pasar el mouse en el elemento activo */
+    }
