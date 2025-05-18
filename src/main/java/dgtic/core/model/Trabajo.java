@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -14,6 +13,19 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "trabajo")
 public class Trabajo {
+
+    public Trabajo(Integer idTrabajo, String nombreTrabajo, LocalDate fechaAsignacion, LocalDate fechaLimite,
+                   String descripcion, Grupo grupo, Double ponderacionHistorica, TipoTrabajo tipoTrabajo) {
+        this.idTrabajo = idTrabajo;
+        this.nombreTrabajo = nombreTrabajo;
+        this.fechaAsignacion = fechaAsignacion;
+        this.fechaLimite = fechaLimite;
+        this.descripcion = descripcion;
+        this.grupo = grupo;
+        this.ponderacionHistorica = 0.0; // Inicialmente será 0, se podrá guardar en el sistema para mejorar experiencia de usuario pero no lo modificará el usuario.
+        this.tipoTrabajo = tipoTrabajo;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_trabajo")
@@ -42,10 +54,8 @@ public class Trabajo {
     @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", nullable = false)
     private Grupo grupo;
 
-    @Min(value = 0, message = "{trabajo.ponderacionFinal.min}")
-    @Max(value = 100, message = "{trabajo.ponderacionFinal.max}")
-    @Column(name = "ponderacion_final")
-    private Double ponderacionFinal;
+    @Column(name = "ponderacion_historica", columnDefinition = "DECIMAL(5,2) DEFAULT 0.0")
+    private Double ponderacionHistorica=0.0;
 
     @NotNull(message = "{trabajo.tipoTrabajo.notNull}")
     @ManyToOne

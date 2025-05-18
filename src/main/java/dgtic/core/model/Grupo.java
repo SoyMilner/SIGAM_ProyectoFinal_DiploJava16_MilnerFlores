@@ -29,6 +29,11 @@ public class Grupo {
 
     @ManyToOne
     @ToString.Exclude()
+    @JoinColumn(name = "id_maestro", referencedColumnName = "id_maestro", nullable = false)
+    private Maestro maestro = new Maestro();
+
+    @ManyToOne
+    @ToString.Exclude()
     @JoinColumn(name = "id_asignatura", referencedColumnName = "id_asignatura", nullable = true)
     private Asignatura asignatura = new Asignatura();
 

@@ -21,6 +21,11 @@ public class GrupoServiceImpl implements GrupoService {
         return grupoRepository.findAll();
     }
 
+//    @Override
+//    public List<Grupo> obtenerGruposDeMaestro(Integer idMaestro) {
+//        return grupoRepository.findByMaestroIdMaestro(idMaestro);
+//    }
+
     @Override
     public Grupo guardarGrupo(Grupo grupo) {
         return grupoRepository.save(grupo);

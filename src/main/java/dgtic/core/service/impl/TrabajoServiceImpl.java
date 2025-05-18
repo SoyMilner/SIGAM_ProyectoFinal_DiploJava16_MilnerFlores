@@ -1,5 +1,6 @@
 package dgtic.core.service.impl;
 
+import dgtic.core.model.Maestro;
 import dgtic.core.model.Trabajo;
 import dgtic.core.repository.TrabajoRepository;
 import dgtic.core.service.TrabajoService;
@@ -42,4 +43,13 @@ public class TrabajoServiceImpl implements TrabajoService {
         return trabajoRepository.findByGrupoIdGrupo(idGrupo);
     }
 
+    @Override
+    public List<Trabajo> obtenerTrabajosDeMaestro(Integer idMaestro) {
+        return trabajoRepository.findByMaestroIdMaestro(idMaestro);
+    }
+
+    @Override
+    public Maestro obtenerOwnerTrabajo(Integer idTrabajo) {
+        return trabajoRepository.findOwnerTrabajo(idTrabajo);
+    }
 }

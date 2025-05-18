@@ -32,7 +32,7 @@ public class IndexController {
     }
 
 
-    // Perfil del usuario (opcional para tu implementación futura)
+    // Perfil del usuario
     @GetMapping("/profile")
     public String profile() {
         return "principal/profile";

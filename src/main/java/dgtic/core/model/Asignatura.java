@@ -29,6 +29,7 @@ public class Asignatura {
     @Column(name = "descripcion")
     private String descripcion;
 
+
     @OneToMany(mappedBy = "asignatura",fetch = FetchType.EAGER)
     private List<Grupo> grupos = new ArrayList<>();
 

@@ -41,7 +41,7 @@ body {
     min-width: 70px;
     z-index: 1000;
     transition: all .15s ease-in-out;
-    background-color: #0e2238;
+    background-color: rgba(86, 73, 132,1);
     display: flex;
     flex-direction: column;
 }
@@ -99,18 +99,20 @@ a.sidebar-link {
 
 a.sidebar-link:hover {
     background-color: rgba(255, 255, 255, .075);
-    border-left: 3px solid #3b7ddd;
+    border-left: 3px solid #34183b;
 }
 
 .sidebar-item {
     position: relative;
 }
 
+
+
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
     position: absolute;
     top: 0;
     left: 70px;
-    background-color: #0e2238;
+    background-color: rgba(86, 73, 132,1);
     padding: 0;
     min-width: 15rem;
     display: none;
@@ -118,7 +120,6 @@ a.sidebar-link:hover {
 
 #sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
     display: block;
-    max-height: 15em;
     width: 100%;
     opacity: 0.75;
 }

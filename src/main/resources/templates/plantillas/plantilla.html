@@ -42,14 +42,11 @@
           <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
              data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
             <i class="bi bi-person-video3"></i>
-            <span>Grupos (in dev)</span>
+            <span>Grupos</span>
           </a>
           <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-            <li class="sidebar-item">
-              <a th:href="@{/infoGrupo/Grupo 1}" class="sidebar-link">Grupo 1 (in dev)</a>
-            </li>
-            <li class="sidebar-item">
-              <a th:href="@{/infoGrupo/Grupo 2}" class="sidebar-link">Grupo 2 (in dev)</a>
+            <li class="sidebar-item" th:each="grupo : ${selectGrupo}">
+              <a th:href="@{/grupos/info/{id} (id=${grupo.idGrupo})}" class="sidebar-link" th:text="${grupo.nombreGrupo}"></a>
             </li>
           </ul>
         </li>
