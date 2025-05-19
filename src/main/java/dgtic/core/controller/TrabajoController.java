@@ -13,6 +13,9 @@ import dgtic.core.service.GrupoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -60,15 +63,21 @@ public class TrabajoController {
     }
 
     @GetMapping
-    public String renderTrabajos(HttpServletRequest request, Model model, @ModelAttribute("successMessage") String successMessage) {
+    public String renderTrabajos(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "size", defaultValue = "10") int size, @ModelAttribute("successMessage") String successMessage) {
 
         Integer idMaestro = obtenerIdMaestro(request);
         if (idMaestro == null) {
             return "redirect:/login?sessionExpired=true";
         }
 
+        // Objeto Pageable
+        Pageable pageable = PageRequest.of(page, size);
+        // Utilizar el metodo paginado para obtener los trabajos del maestro
+        Page<Trabajo> trabajosPage = trabajoService.obtenerTrabajosDeMaestroPag(idMaestro, pageable);
+
         model.addAttribute("trabajo", new Trabajo()); // Objeto para el formulario
-        model.addAttribute("listaTrabajos", trabajoService.obtenerTrabajosDeMaestro(idMaestro));
+        model.addAttribute("trabajosPage", trabajosPage);
         model.addAttribute("listaGrupos", maestroService.obtenerGruposDeMaestro(idMaestro));
         model.addAttribute("listaTiposTrabajo", tipoTrabajoService.obtenerTodosLosTiposTrabajo());
 
@@ -209,28 +218,31 @@ public class TrabajoController {
     }
 
     @GetMapping("/filtrar")
-    public String filtrarTrabajosPorGrupo(@RequestParam(required = false) Integer idGrupo, HttpServletRequest request, Model model) {
+    public String filtrarTrabajosPorGrupo(@RequestParam(required = false) Integer idGrupo,  @RequestParam(value="page", defaultValue="0") int page,
+                                          @RequestParam(value="size", defaultValue="10") int size, HttpServletRequest request, Model model) {
         Integer idMaestro = obtenerIdMaestro(request);
         if (idMaestro == null) {
             return "redirect:/login?sessionExpired=true";
         }
 
-        List<Trabajo> trabajosFiltrados;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Trabajo> trabajosFiltrados;
+
         if (idGrupo == null || idGrupo == -1) { // Detectar opción "Todos los grupos"
-            trabajosFiltrados = trabajoService.obtenerTrabajosDeMaestro(idMaestro);
+            trabajosFiltrados = trabajoService.obtenerTrabajosDeMaestroPag(idMaestro,pageable);
         } else {
-            trabajosFiltrados = trabajoService.obtenerTrabajosPorGrupo(idGrupo);
-            Grupo grupo = grupoService.buscarPorId(idGrupo);
             // Comprobar si el grupo pertenece al maestro autenticado
+            Grupo grupo = grupoService.buscarPorId(idGrupo);
             if (!grupo.getMaestro().getIdMaestro().equals(idMaestro)) {
                 // Se podría redirigir a una página de error o simplemente a la lista de grupos
                 return "redirect:/index?accessDenied=true";
             }
+            trabajosFiltrados = trabajoService.obtenerTrabajosPorGrupoPag(idGrupo,pageable);
+
         }
 
-
-
-        model.addAttribute("listaTrabajos", trabajosFiltrados);
+        model.addAttribute("idGrupo", idGrupo);
+        model.addAttribute("trabajosPage", trabajosFiltrados);
         model.addAttribute("listaGrupos", maestroService.obtenerGruposDeMaestro(idMaestro));
         return "trabajos/trabajosAsignados";
     }

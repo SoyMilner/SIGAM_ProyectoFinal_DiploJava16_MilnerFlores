@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -52,6 +54,7 @@ public class Trabajo {
     @NotNull(message = "{trabajo.grupo.notNull}")
     @ManyToOne
     @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", nullable = false)
+    @ToString.Exclude()
     private Grupo grupo;
 
     @Column(name = "ponderacion_historica", columnDefinition = "DECIMAL(5,2) DEFAULT 0.0")
@@ -62,4 +65,10 @@ public class Trabajo {
     @JoinColumn(name = "id_tipo_trabajo", referencedColumnName = "id_tipo_trabajo", nullable = false)
     @ToString.Exclude()
     private TipoTrabajo tipoTrabajo;
+
+    @OneToMany(mappedBy = "trabajo")
+    @ToString.Exclude()
+    private List<TrabajoEstudiante> estudiantesTrabajos = new ArrayList<>();
+
+
 }

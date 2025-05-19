@@ -49,6 +49,11 @@ public class Maestro {
     private String contrasena;
 
     @OneToMany(mappedBy = "maestro",fetch = FetchType.EAGER)
+    @ToString.Exclude()
     private List<Grupo> grupos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "maestro",fetch = FetchType.EAGER)
+    @ToString.Exclude()
+    private List<Estudiante> estudiantes = new ArrayList<>();
 
 }

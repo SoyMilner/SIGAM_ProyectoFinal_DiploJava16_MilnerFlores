@@ -31,6 +31,7 @@ public class Asignatura {
 
 
     @OneToMany(mappedBy = "asignatura",fetch = FetchType.EAGER)
+    @ToString.Exclude()
     private List<Grupo> grupos = new ArrayList<>();
 
 }

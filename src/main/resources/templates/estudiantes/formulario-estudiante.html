@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+  <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+
+  <div class="text-center main p-3">
+    <div class="container d-flex justify-content-center">
+      <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+        <h1 class="card-header text-center"><strong>Agregar Nuevo Alumno</strong></h1>
+
+        <div th:if="${successMessage != null}" class="alert alert-success text-center">
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage != null}" class="alert alert-danger text-center">
+          <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/grupos/{idGrupo}/estudiantes/guardar(idGrupo=${grupo.idGrupo})}" th:object="${estudiante}" method="post">
+          <input type="hidden" th:field="*{idEstudiante}"/>
+
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+            <input type="text" id="apellidoPaterno" th:field="*{apellidoPaterno}" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+            <input type="text" id="apellidoMaterno" th:field="*{apellidoMaterno}" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+            <input type="email" id="correoElectronico" th:field="*{correoElectronico}" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="text" id="matricula" th:field="*{matricula}" class="form-control" required>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-add">Guardar</button>
+            <a th:href="@{'/grupos/info/' + ${grupo.idGrupo} + '?vista=estudiantes'}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+</body>
+</html>

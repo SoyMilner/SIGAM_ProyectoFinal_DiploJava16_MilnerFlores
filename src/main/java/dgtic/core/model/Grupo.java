@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,15 @@ public class Grupo {
     @JoinColumn(name = "id_asignatura", referencedColumnName = "id_asignatura", nullable = true)
     private Asignatura asignatura = new Asignatura();
 
-    @OneToMany(mappedBy = "grupo",fetch =FetchType.EAGER)
+    //Al eliminar un grupo se borrarán los trabajos en cascada
+    @OneToMany(mappedBy = "grupo",fetch =FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Trabajo> trabajos = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "grupos", fetch = FetchType.EAGER)
+    @ToString.Exclude()
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Estudiante> estudiantes = new ArrayList<>();
 
 }

@@ -26,5 +26,6 @@ public class TipoTrabajo {
     private String nombreTipoTrabajo;
 
     @OneToMany(mappedBy = "tipoTrabajo", fetch = FetchType.EAGER)
+    @ToString.Exclude()
     private List<Trabajo> trabajos = new ArrayList<>();
 }

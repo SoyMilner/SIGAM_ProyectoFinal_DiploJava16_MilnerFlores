@@ -75,3 +75,15 @@
       background-color: #654D80; /* Color de fondo al pasar el mouse en el elemento activo (MORADO más oscuro)*/
       border-color: #654D80; /* Color del borde al pasar el mouse en el elemento activo */
     }
+
+      .btn-unselected {
+          color: #fff; /* Color del texto en el elemento activo */
+          background-color: #9FA19F; /* Color de fondo (GRIS)*/
+          border-color: #9FA19F; /* Color del borde en el elemento activo */
+        }
+
+        .btn-unselected:hover {
+          color: #fff; /* Color del texto al pasar el mouse en el elemento activo */
+          background-color: #7F817F; /* Color de fondo al pasar el mouse (GRIS más oscuro)*/
+          border-color: #7F817F; /* Color del borde al pasar el mouse */
+        }

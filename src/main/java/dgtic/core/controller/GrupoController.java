@@ -1,20 +1,17 @@
 package dgtic.core.controller;
 
-import dgtic.core.model.Asignatura;
-import dgtic.core.model.Grupo;
-import dgtic.core.model.Maestro;
-import dgtic.core.model.Trabajo;
+import dgtic.core.model.*;
 import dgtic.core.repository.AsignaturaRepository;
 import dgtic.core.repository.GrupoRepository;
 import dgtic.core.security.CookieUtil;
 import dgtic.core.security.jwt.JwtUtil;
-import dgtic.core.service.AsignaturaService;
-import dgtic.core.service.GrupoService;
-import dgtic.core.service.MaestroService;
-import dgtic.core.service.TrabajoService;
+import dgtic.core.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +36,9 @@ public class GrupoController {
     private AsignaturaService asignaturaService;
 
     @Autowired
+    private EstudianteService estudianteService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
@@ -61,7 +61,8 @@ public class GrupoController {
     }
 
     @GetMapping("/grupos/info/{id}")
-    public String mostrarInfoGrupo(@PathVariable Integer id, HttpServletRequest request, Model model) {
+    public String mostrarInfoGrupo(@PathVariable Integer id, HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         // Extraer el id del maestro autenticado a partir del token en la cookie
         Integer idMaestroAutenticado = obtenerIdMaestro(request);
         if (idMaestroAutenticado == null) {
@@ -80,10 +81,30 @@ public class GrupoController {
             return "redirect:/index?accessDenied=true";
         }
 
-        // Si es correcto, continuar y mostrar la información del grupo
-        List<Trabajo> trabajosGrupo = trabajoService.obtenerTrabajosPorGrupo(id);
+        // Extraer el parámetro "vista" (si viene en la URL) para determinar qué se va a mostrar (Trabajos | Alumnos).
+        String vista = request.getParameter("vista");
+        if (vista == null || vista.trim().isEmpty()) {
+            vista = "estudiantes";   // valor por defecto, por ejemplo, mostrar estudiantes
+        }
+
+        // Obtener la lista de estudiantes inscritos, a través de la relación en la entidad.
+        // Suponiendo que si se está mostrando estudiantes, se utiliza la paginación de estudiantes. Si está mostrando trabajos, se muestra paginación de trabajos.
+        if ("estudiantes".equals(vista)) {
+            Pageable pageable = PageRequest.of(page, size);
+            // Usar el metodo paginado
+            Page<Estudiante> estudiantesPage = estudianteService.obtenerEstudiantesPorGrupoYMaestroPag(id, grupo.getMaestro().getIdMaestro(), pageable);
+            model.addAttribute("estudiantesPage", estudiantesPage);
+        }
+
+        if ("trabajos".equals(vista)) {
+            // Para trabajos, usar también paginación:
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Trabajo> trabajosPage = trabajoService.obtenerTrabajosPorGrupoPag(id, pageable);
+            model.addAttribute("trabajosPage", trabajosPage);
+        }
+
         model.addAttribute("grupo", grupo);
-        model.addAttribute("trabajosGrupo", trabajosGrupo);
+        model.addAttribute("vista", vista);  // Indicamos qué sección se debe mostrar
 
         return "grupos/infoGrupo"; // Vista con la información del grupo y sus trabajos
     }

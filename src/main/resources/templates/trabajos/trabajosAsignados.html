@@ -12,29 +12,20 @@
             <span th:text="${successMessage}"></span>
         </div>
 
+        <h1 class="mt-4">Gestión de Trabajos</h1>
+
         <!-- Filtro por grupo -->
         <div class="mb-3 text-center">
             <label for="filtroGrupo" class="form-label">Filtrar por Grupo:</label>
             <form th:action="@{/trabajos/filtrar}" method="get">
                 <select class="form-select d-inline-block w-auto" id="filtroGrupo" name="idGrupo" onchange="this.form.submit()">
-                    <option value="" selected class="text-muted text-center">- Seleccione un grupo -</option> <!-- Opción por defecto -->
-                    <option value="-1">Todos los grupos</option> <!-- Opción específica -->
+                    <option value="" selected class="text-muted text-center">- Seleccione un grupo -</option>
+                    <option value="-1">Todos los grupos</option>
                     <option th:each="g : ${listaGrupos}" th:value="${g.idGrupo}" th:text="${g.nombreGrupo}"></option>
                 </select>
             </form>
-
         </div>
 
-        <nav aria-label="...">
-            <ul class="pagination pagination-lg justify-content-center">
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">Trabajos por calificar</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Trabajos calificados</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Botón para agregar nuevo trabajo -->
         <div class="fixed-bottom text-end me-4 mb-4">
@@ -43,9 +34,9 @@
             </a>
         </div>
 
-        <!-- Tabla con trabajos filtrados -->
+        <!-- Tabla con trabajos paginados -->
         <div>
-            <table th:if="${!listaTrabajos.isEmpty()}" class="table table-striped table-hover table-sm">
+            <table th:if="${trabajosPage != null and trabajosPage.content.size() > 0}" class="table table-striped table-hover table-sm">
                 <thead class="table-dark table-bordered">
                 <tr>
                     <th>Nombre del Trabajo</th>
@@ -58,7 +49,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="trabajo : ${listaTrabajos}">
+                <tr th:each="trabajo : ${trabajosPage.content}">
                     <td th:text="${trabajo.nombreTrabajo}"></td>
                     <td th:text="${trabajo.descripcion}"></td>
                     <td th:text="${trabajo.fechaAsignacion}"></td>
@@ -66,11 +57,10 @@
                     <td th:text="${trabajo.grupo.nombreGrupo}"></td>
                     <td th:text="${trabajo.tipoTrabajo.nombreTipoTrabajo}"></td>
                     <td>
-                        <a th:href="@{/trabajos/modificar/{id} (id=${trabajo.idTrabajo})}" class="btn btn-add">
+                        <a th:href="@{/trabajos/modificar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-add">
                             Modificar <i class="fas fa-pen-nib"></i>
                         </a>
-
-                        <a th:href="@{/trabajos/eliminar/{id} (id=${trabajo.idTrabajo})}" class="btn btn-danger">
+                        <a th:href="@{/trabajos/eliminar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-danger">
                             Eliminar <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
@@ -78,16 +68,40 @@
                 </tbody>
             </table>
         </div>
+
         <!-- Mensaje cuando no hay trabajos disponibles -->
-        <p th:if="${listaTrabajos == null || listaTrabajos.isEmpty()}" class="text-center text-muted">
+        <p th:if="${trabajosPage == null or trabajosPage.content.isEmpty()}" class="text-center text-muted">
             No hay trabajos disponibles en este momento. ¡Agrega tu primer trabajo para comenzar!
         </p>
+
+        <!-- Controles de paginación para trabajos -->
+        <div th:if="${trabajosPage != null}">
+            <span> Página <span th:text="${trabajosPage.number + 1}"></span> de <span th:text="${trabajosPage.totalPages}"></span> </span>
+            <div>
+                <!-- Si se está filtrando (idGrupo definido) -->
+                <div th:if="${idGrupo != null}">
+                    <a th:if="${trabajosPage.hasPrevious()}"
+                       th:href="@{'/trabajos/filtrar?idGrupo=' + ${idGrupo} + '&page=' + (${trabajosPage.number} - 1) + '&size=' + ${trabajosPage.size}}"
+                       class="btn btn-add">Anterior</a>
+                    <a th:if="${trabajosPage.hasNext()}"
+                       th:href="@{'/trabajos/filtrar?idGrupo=' + ${idGrupo} + '&page=' + (${trabajosPage.number} + 1) + '&size=' + ${trabajosPage.size}}"
+                       class="btn btn-add">Siguiente</a>
+                </div>
+                <!-- Si no se aplica filtro -->
+                <div th:if="${idGrupo == null}">
+                    <a th:if="${trabajosPage.hasPrevious()}"
+                       th:href="@{'/trabajos?page=' + (${trabajosPage.number} - 1) + '&size=' + ${trabajosPage.size}}"
+                       class="btn btn-add">Anterior</a>
+                    <a th:if="${trabajosPage.hasNext()}"
+                       th:href="@{'/trabajos?page=' + (${trabajosPage.number} + 1) + '&size=' + ${trabajosPage.size}}"
+                       class="btn btn-add">Siguiente</a>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-
-
-
 </div>
 <footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
-
 </body>
 </html>
