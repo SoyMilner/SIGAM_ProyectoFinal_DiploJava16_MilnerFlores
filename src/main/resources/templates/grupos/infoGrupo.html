@@ -36,6 +36,7 @@
                 <table th:if="${trabajosPage.content.size() > 0}" class="table table-striped table-hover table-sm">
                     <thead class="table-dark table-bordered">
                     <tr>
+                        <th>Calificar</th>
                         <th>Nombre del Trabajo</th>
                         <th>Tipo de Trabajo</th>
                         <th>Descripción</th>
@@ -45,6 +46,17 @@
                     </thead>
                     <tbody>
                     <tr th:each="trabajo : ${trabajosPage.content}">
+                        <td>
+                            <a th:href="@{'/grupos/' + ${grupo.idGrupo} + '/trabajos/' + ${trabajo.idTrabajo} + '/calificar'}"
+                               class="btn"
+                               style="background-color: #94AF92 ; border-color: #94AF92 ; color: white;"
+                               title="Calificar Trabajo"
+                               onmouseover="this.style.backgroundColor='#6B8E69'; this.style.borderColor='#6B8E69';"
+                               onmouseout="this.style.backgroundColor='#94AF92 '; this.style.borderColor='#94AF92 ';">
+                                <i class="bi bi-clipboard2-check"></i>
+                            </a>
+
+                        </td>
                         <td th:text="${trabajo.nombreTrabajo}"></td>
                         <td th:text="${trabajo.tipoTrabajo.nombreTipoTrabajo}"></td>
                         <td th:text="${trabajo.descripcion}"></td>

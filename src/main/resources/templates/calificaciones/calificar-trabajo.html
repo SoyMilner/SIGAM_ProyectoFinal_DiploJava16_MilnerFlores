@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+  <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+  <div class="text-center main p-3">
+
+    <!-- Card con la información del Trabajo -->
+    <div class="card shadow-lg p-4 mb-4" style="max-width: 600px; width: 100%;">
+      <h2 class="card-header" th:text="${trabajo.nombreTrabajo}"></h2>
+      <p><strong>Tipo: </strong><span th:text="${trabajo.tipoTrabajo.nombreTipoTrabajo}"></span></p>
+      <p><strong>Fecha de Asignación: </strong><span th:text="${trabajo.fechaAsignacion}"></span></p>
+      <p><strong>Fecha Límite: </strong><span th:text="${trabajo.fechaLimite}"></span></p>
+      <p><strong>Descripción: </strong><span th:text="${trabajo.descripcion}"></span></p>
+    </div>
+
+    <!-- Formulario para actualizar las calificaciones -->
+    <form th:action="@{'/grupos/' + ${grupo.idGrupo} + '/trabajos/' + ${trabajo.idTrabajo} + '/calificar'}"
+          th:object="${wrapper}" method="post">
+      <table class="table table-striped table-hover table-sm">
+        <thead class="table-dark table-bordered">
+        <tr>
+          <th>Nombre Completo</th>
+          <th>Calificación</th>
+          <th>Fecha de Entrega</th>
+          <th>Comentarios</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cal, iterStat : *{calificaciones}">
+          <td>
+            <input type="hidden" th:field="*{calificaciones[__${iterStat.index}__].idEstudiante}" />
+            <span th:text="*{calificaciones[__${iterStat.index}__].nombreCompleto}"></span>
+          </td>
+          <td>
+            <input type="number" step="0.1" min="0" max="10" class="form-control"
+                   th:field="*{calificaciones[__${iterStat.index}__].calificacion}" required/>
+          </td>
+          <td>
+            <input type="date" class="form-control"
+                   th:field="*{calificaciones[__${iterStat.index}__].fechaEntrega}" />
+          </td>
+          <td>
+                  <textarea class="form-control" rows="2"
+                            th:field="*{calificaciones[__${iterStat.index}__].comentarios}"></textarea>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <button type="submit" class="btn btn-add">Guardar</button>
+        <a th:href="@{'/grupos/info/' + ${grupo.idGrupo} + '?vista=trabajos'}" class="btn btn-secondary">Regresar</a>
+      </div>
+    </form>
+  </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+</body>
+</html>

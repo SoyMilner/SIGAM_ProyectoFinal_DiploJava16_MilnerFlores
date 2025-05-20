@@ -17,6 +17,11 @@ public class TrabajoEstudianteServiceImpl implements TrabajoEstudianteService {
     private TrabajoEstudianteRepository trabajoEstudianteRepository;
 
     @Override
+    public TrabajoEstudiante guardar(TrabajoEstudiante te) {
+        return trabajoEstudianteRepository.save(te);
+    }
+
+    @Override
     public List<TrabajoEstudiante> obtenerTrabajosCalificadosPorEstudiante(Integer idEstudiante) {
         return trabajoEstudianteRepository.findCalificadosByEstudianteId(idEstudiante);
     }

@@ -57,11 +57,11 @@
                     <td th:text="${trabajo.grupo.nombreGrupo}"></td>
                     <td th:text="${trabajo.tipoTrabajo.nombreTipoTrabajo}"></td>
                     <td>
-                        <a th:href="@{/trabajos/modificar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-add">
-                            Modificar <i class="fas fa-pen-nib"></i>
+                        <a th:href="@{/trabajos/modificar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-add" title="Modificar Trabajo">
+                            <i class="bi bi-pencil"></i>
                         </a>
-                        <a th:href="@{/trabajos/eliminar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-danger">
-                            Eliminar <i class="fas fa-trash-alt"></i>
+                        <a th:href="@{/trabajos/eliminar/{id}(id=${trabajo.idTrabajo})}" class="btn btn-danger" title="Eliminar Trabajo">
+                            <i class="bi bi-trash3-fill"></i>
                         </a>
                     </td>
                 </tr>
