@@ -96,6 +96,7 @@ public class GrupoController {
             model.addAttribute("estudiantesPage", estudiantesPage);
         }
 
+        //Obtener la lista de trabajos que corresponden al grupo
         if ("trabajos".equals(vista)) {
             // Para trabajos, usar también paginación:
             Pageable pageable = PageRequest.of(page, size);
