@@ -2,9 +2,9 @@ USE sigam_database;
 
 -- 1. Maestros (3) Contraseña: password
 INSERT INTO Maestro (Nombre, Apellido_Paterno, Apellido_Materno, Correo, Contrasena) VALUES
-('Irma',    'Pérez',    'González',      'irma.perez@email.com',    '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
-('Milner',  'Flores',   'Ushuaía',       'milner.flores@email.com', '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
-('Dalina',  'Ramírez',  'Vega',          'dalina.ramirez@email.com','$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q');
+('Irma',    'Pérez',    'Varela',      'irma.perez@email.com',    '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
+('Milner',  'Flores',   'Hilerio',       'milner.flores@email.com', '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
+('Dalina',  'Flores',  'Vega',          'dalina.flores@email.com','$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q');
 
 -- 2. Asignaturas (6)
 INSERT INTO Asignatura (Nombre_Asignatura, Descripcion) VALUES
@@ -38,23 +38,23 @@ INSERT INTO Grupo (Nombre_Grupo, ID_Maestro, ID_Asignatura) VALUES
 
 -- Grupo 1 (ID_Grupo = 1)
 INSERT INTO Estudiante (Nombre, Apellido_Paterno, Apellido_Materno, Matricula, Correo_Electronico, ID_Maestro) VALUES
-('Ana',   'López',   'Soto',   'E01', 'ana.l soto@email.com',    1),
-('Luis',  'García',  'Torres', 'E02', 'luis.torres@email.com',   1),
-('María', 'Jiménez', 'Ríos',   'E03', 'maria.rios@email.com',    1),
-('Juan',  'Pacheco', 'Silva',  'E04', 'juan.silva@email.com',    1),
-('Carmen','Reyes',   'Díaz',   'E05', 'carmen.diaz@email.com',   1);
+('Samantha',   'Martínez',   'García',   'E01', 'sam.g@email.com',    1),
+('Alexis',  'García',  'Cortés', 'E02', 'alexis.gc@email.com',   1),
+('Mariano', 'Moreno', 'Ramírez',   'E03', 'mariano.mor@email.com',    1),
+('Aldo',  'Guzmán', 'Ramírez',  'E04', 'aldo.guzman@email.com',    1),
+('Geovanni','Romero',   'Rivera',   'E05', 'geo.rr@email.com',   1);
 
 -- Grupo 1: Estudiantes ID 1–5
 INSERT INTO Estudiante_Grupo (ID_Estudiante, ID_Grupo) VALUES
 (1, 1), (2, 1), (3, 1), (4, 1), (5, 1);
 
 -- Comentarios para estos 5
-INSERT INTO Comentarios (Comentario, ID_Estudiante, Fecha_Comentario) VALUES
-('Le cuesta trabajo la sintaxis',     1, '2025-02-10'),
-('Participa poco en clase oral',       2, '2025-03-05'),
-('Debe mejorar la ortografía',        3, '2025-01-20'),
-('Muy buen progreso en lectura',      4, '2025-04-15'),
-('Necesita más práctica de redacción',5, '2025-03-30');
+-- INSERT INTO Comentarios (Comentario, ID_Estudiante, Fecha_Comentario) VALUES
+-- ('Le cuesta trabajo la sintaxis',     1, '2025-02-10'),
+-- ('Participa poco en clase oral',       2, '2025-03-05'),
+-- ('Debe mejorar la ortografía',        3, '2025-01-20'),
+-- ('Muy buen progreso en lectura',      4, '2025-04-15'),
+-- ('Necesita más práctica de redacción',5, '2025-03-30');
 
 -- Esto se repite para cada grupo (IDs 2 a 9). Grupo 2:
 INSERT INTO Estudiante (Nombre, Apellido_Paterno, Apellido_Materno, Matricula, Correo_Electronico, ID_Maestro) VALUES
@@ -68,12 +68,12 @@ INSERT INTO Estudiante (Nombre, Apellido_Paterno, Apellido_Materno, Matricula, C
 INSERT INTO Estudiante_Grupo (ID_Estudiante, ID_Grupo) VALUES
 (6, 2), (7, 2), (8, 2), (9, 2), (10, 2);
 
-INSERT INTO Comentarios (Comentario, ID_Estudiante, Fecha_Comentario) VALUES
-('Excelente análisis literario',      6, '2025-02-25'),
-('Participación destacada en debates',7, '2025-03-12'),
-('Debe citar mejor sus fuentes',      8, '2025-04-01'),
-('Buena interpretación de textos',    9, '2025-01-30'),
-('Profundizar en lecturas críticas', 10,'2025-04-20');
+-- INSERT INTO Comentarios (Comentario, ID_Estudiante, Fecha_Comentario) VALUES
+-- ('Excelente análisis literario',      6, '2025-02-25'),
+-- ('Participación destacada en debates',7, '2025-03-12'),
+-- ('Debe citar mejor sus fuentes',      8, '2025-04-01'),
+-- ('Buena interpretación de textos',    9, '2025-01-30'),
+-- ('Profundizar en lecturas críticas', 10,'2025-04-20');
 
 
 -- Grupo 3: Irma, ID_Grupo = 3, Estudiantes 11–15
@@ -180,13 +180,13 @@ INSERT INTO Trabajo_Estudiante (ID_Trabajo, ID_Estudiante, Calificacion, Fecha_E
 (2, 5,  8.5, '2025-03-09', 'Muy bien');
 
 -- 8. Periodo_Academico (2 registros)
-INSERT INTO Periodo_Academico (Nombre_Periodo, Fecha_Inicio, Fecha_Fin, Descripcion) VALUES
-('2025-1', '2025-01-01', '2025-06-30', 'Primer semestre 2025'),
-('2025-2', '2025-07-01', '2025-12-31', 'Segundo semestre 2025');
+-- INSERT INTO Periodo_Academico (Nombre_Periodo, Fecha_Inicio, Fecha_Fin, Descripcion) VALUES
+-- ('2025-1', '2025-01-01', '2025-06-30', 'Primer semestre 2025'),
+-- ('2025-2', '2025-07-01', '2025-12-31', 'Segundo semestre 2025');
 
 -- 9. Historial_Calificaciones (2 registros de ejemplo)
 -- Asume que el alumno 1 y 2 ya tienen promedio
-INSERT INTO Historial_Calificaciones (ID_Estudiante, ID_Periodo_Academico, Fecha_Registro, Promedio, Comentarios) VALUES
-(1, 1, '2025-06-30', 8.75, 'Buen semestre'),
-(2, 1, '2025-06-30', 7.50, 'Puede mejorar');
+-- INSERT INTO Historial_Calificaciones (ID_Estudiante, ID_Periodo_Academico, Fecha_Registro, Promedio, Comentarios) VALUES
+-- (1, 1, '2025-06-30', 8.75, 'Buen semestre'),
+-- (2, 1, '2025-06-30', 7.50, 'Puede mejorar');
 

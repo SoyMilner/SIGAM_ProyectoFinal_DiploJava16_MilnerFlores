@@ -65,7 +65,13 @@ public class Estudiante {
     @ManyToOne
     @ToString.Exclude()
     @JoinColumn(name = "id_maestro", referencedColumnName = "id_maestro", nullable = false)
-    private Maestro maestro = new Maestro();
+    private Maestro maestro;
+
+    // Relación bidireccional con HistorialCalificaciones
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ToString.Exclude()
+    private List<HistorialCalificaciones> historiales = new ArrayList<>();
+
 
 }
 

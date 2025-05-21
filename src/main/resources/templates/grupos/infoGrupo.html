@@ -83,6 +83,19 @@
                        class="btn btn-add">Siguiente</a>
                 </div>
             </div>
+            <!-- Botón para generar reporte -->
+            <div class="fixed-bottom d-flex justify-content-end me-4 mb-4">
+                <a th:href="@{'/grupos/' + ${grupo.idGrupo} + '/reportes/nuevo'}"
+                   class="btn rounded-circle d-flex align-items-center justify-content-center p-3"
+                   title="Generar Reporte"
+                   style="width: 75px; height: 75px; background-color: #94AF92; border-color: #94AF92; color: white;"
+                   onmouseover="this.style.backgroundColor='#6B8E69'; this.style.borderColor='#6B8E69';"
+                   onmouseout="this.style.backgroundColor='#94AF92'; this.style.borderColor='#94AF92';">
+                    <i class="bi bi-file-pdf" style="font-size: 30px;"></i>
+                </a>
+            </div>
+
+
         </div>
 
 

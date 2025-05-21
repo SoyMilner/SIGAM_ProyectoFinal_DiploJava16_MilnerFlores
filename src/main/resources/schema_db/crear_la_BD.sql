@@ -126,16 +126,15 @@ create table historial_calificaciones (
     promedio decimal(5,2) not null check (promedio >= 0 and promedio <= 10),
     comentarios text,
     foreign key (id_estudiante) references estudiante(id_estudiante),
-    foreign key (id_periodo_academico) references periodo_academico(id_periodo_academico),
-    unique (id_estudiante, id_periodo_academico)
+    foreign key (id_periodo_academico) references periodo_academico(id_periodo_academico)
 );
 
 -- tabla comentarios
 
-create table comentarios (
-    id_comentario int auto_increment primary key,
-    comentario text not null,
-    fecha_comentario datetime not null default current_timestamp,
-    id_estudiante int not null,
-    foreign key (id_estudiante) references estudiante(id_estudiante)
-);
+-- create table comentarios (
+--    id_comentario int auto_increment primary key,
+--    comentario text not null,
+--   fecha_comentario datetime not null default current_timestamp,
+--    id_estudiante int not null,
+--    foreign key (id_estudiante) references estudiante(id_estudiante)
+-- );

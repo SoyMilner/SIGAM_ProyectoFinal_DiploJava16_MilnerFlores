@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private static final String SECRET_KEY = "s2as12siRJt2fVSLp7epUDnZDWr7OBeyrgtfzMeSwL4QUt3NqhnAqvqJn2VC"; // Cambia esto
+    private static final String SECRET_KEY = "s2as12siRJt2fVSLp7epUDnZDWr7OBeyrgtfzMeSwL4QUt3NqhnAqvqJn2VC"; // Clave segura
 
     public String generateToken(String username) {
         return Jwts.builder()

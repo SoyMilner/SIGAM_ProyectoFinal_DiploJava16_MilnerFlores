@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/plantilla.html :: head}"></head>
+<body>
+<div class="wrapper">
+    <aside th:replace="~{plantillas/plantilla.html :: navbar}"></aside>
+    <div class="container main p-3">
+        <h1 class="text-center">Generar Reporte Grupal</h1>
+
+        <!-- Mensaje de error en caso de que la suma de ponderaciones no sea 100% -->
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Formulario vinculado al objeto ReporteFormDTO -->
+        <form id="reporteForm"
+              th:action="@{'/grupos/' + ${grupo.idGrupo} + '/reportes/generar'}"
+              th:object="${reporteForm}" method="post" target="_blank"
+              onsubmit="redirectAfterSubmit()">
+
+            <!-- Datos del Período Académico -->
+            <div class="card shadow-lg p-4 mb-4">
+                <h3 class="mb-3">Datos del Período Académico</h3>
+                <div class="form-group mb-3">
+                    <label for="nombrePeriodo">Nombre del Período:</label>
+                    <input type="text" class="form-control" th:field="*{nombrePeriodo}" id="nombrePeriodo" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="fechaInicio">Fecha de Inicio:</label>
+                    <input type="date" class="form-control" th:field="*{fechaInicio}" id="fechaInicio" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="fechaFin">Fecha de Fin:</label>
+                    <input type="date" class="form-control" th:field="*{fechaFin}" id="fechaFin" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="descripcion">Descripción (opcional):</label>
+                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion"></textarea>
+                </div>
+            </div>
+
+            <!-- Ponderaciones de Tipos de Trabajo -->
+            <div class="card shadow-lg p-4 mb-4">
+                <h3 class="mb-3 text-center">Ponderaciones para Cada Tipo de Trabajo</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Tipo de Trabajo</th>
+                        <th>Ponderación (%)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pt, iterStat : *{ponderaciones}">
+                        <td>
+                            <input type="hidden" th:field="*{ponderaciones[__${iterStat.index}__].idTipoTrabajo}" />
+                            <input type="hidden" th:field="*{ponderaciones[__${iterStat.index}__].nombreTipoTrabajo}" />
+                            <span th:text="*{ponderaciones[__${iterStat.index}__].nombreTipoTrabajo}"></span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control"
+                                   th:field="*{ponderaciones[__${iterStat.index}__].ponderacion}"
+                                   min="0" max="100" step="0.1" required/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="text-end">
+                    <strong>Total ponderación:</strong> <span id="totalPonderacion">0.0</span>%
+                </p>
+                <p id="avisoTotal" style="color:red;"></p>
+            </div>
+
+            <!-- Botones -->
+            <div class="text-center">
+                <button id="btnGenerarReporte" type="submit" class="btn btn-add">Generar Reporte</button>
+                <a th:href="@{'/grupos/info/' + ${grupo.idGrupo} + '?vista=trabajos'}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+<footer th:replace="~{plantillas/plantilla.html :: footer}"></footer>
+
+<!-- Script para recalcular la suma de ponderaciones en tiempo real,
+     mostrar el total y deshabilitar el submit si la suma no es 100% -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function recalcularTotal() {
+        var total = 0;
+        document.querySelectorAll('input[type="number"]').forEach(function(input) {
+            var val = parseFloat(input.value) || 0;
+            total += val;
+        });
+        document.getElementById('totalPonderacion').innerText = total.toFixed(1);
+        var btnGenerar = document.getElementById('btnGenerarReporte');
+        var aviso = document.getElementById('avisoTotal');
+        if (Math.abs(total - 100) > 0.01) {
+            btnGenerar.disabled = true;
+            aviso.innerText = "La suma de ponderaciones debe ser 100% (actual: " + total.toFixed(1) + "%)";
+        } else {
+            btnGenerar.disabled = false;
+            aviso.innerText = "";
+        }
+    }
+    document.querySelectorAll('input[type="number"]').forEach(function(input) {
+        input.addEventListener('input', recalcularTotal);
+    });
+    window.onload = recalcularTotal;
+    /*]]>*/
+</script>
+
+<!-- Script para redirigir la pestaña actual luego de abrir el PDF -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function redirectAfterSubmit() {
+        setTimeout(function(){
+            window.location.href = /*[[${'/grupos/info/' + grupo.idGrupo + '?vista=trabajos'}]]*/ '';
+        }, 1000);
+    }
+    /*]]>*/
+</script>
+</body>
+</html>
