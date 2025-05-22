@@ -6,6 +6,7 @@ import dgtic.core.model.PeriodoAcademico;
 import dgtic.core.repository.HistorialCalificacionesRepository;
 import dgtic.core.service.HistorialCalificacionesService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 public class HistorialCalificacionesServiceImpl implements HistorialCalificacionesService {
@@ -28,21 +30,24 @@ public class HistorialCalificacionesServiceImpl implements HistorialCalificacion
     @Override
     @Transactional
     public HistorialCalificaciones actualizar(HistorialCalificaciones historialDto) {
-        // Recupéralo de la base de datos usando el ID
+        log.info("Intentando actualizar historial con ID {}", historialDto.getIdHistorialCalificaciones());
         Optional<HistorialCalificaciones> originalOpt = historialCalificacionesRepository.findById(historialDto.getIdHistorialCalificaciones());
         if (!originalOpt.isPresent()) {
+            log.warn("No se encontró el historial con ID {} para actualizar.", historialDto.getIdHistorialCalificaciones());
             throw new EntityNotFoundException("Historial con ID " + historialDto.getIdHistorialCalificaciones() + " no encontrado.");
         }
 
         HistorialCalificaciones original = originalOpt.get();
 
+        log.debug("Datos antes de actualización: {}", original);
+
         // Actualiza sólo el campo que deseas modificar (comentarios)
         original.setComentarios(historialDto.getComentarios());
 
-        // Puedes actualizar otros campos si lo necesitas, pero evita sobrescribir los que no vienen en la vista
-        // por ejemplo, no setees el estudiante o el período ya que esos deben mantenerse.
+        HistorialCalificaciones actualizado = historialCalificacionesRepository.save(original);
 
-        return historialCalificacionesRepository.save(original);
+        log.info("Historial actualizado exitosamente: {}", actualizado);
+        return actualizado;
     }
 
 

@@ -68,9 +68,7 @@ public class SecurityConfiguration {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return new BCryptPasswordEncoder(11, new SecureRandom());
-        //return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
 
 //    @Bean

@@ -64,6 +64,7 @@
                 <p th:if="${trabajosEstudiante.isEmpty()}" class="text-center text-muted">
                     No hay trabajos asignados a este estudiante.
                 </p>
+                <a th:href="@{'/grupos/info/' + ${grupo.idGrupo} + '?vista=estudiantes'}" class="btn btn-secondary">Regresar</a>
             </div>
         </div>
 

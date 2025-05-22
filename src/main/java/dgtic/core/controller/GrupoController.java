@@ -8,6 +8,7 @@ import dgtic.core.security.jwt.JwtUtil;
 import dgtic.core.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class GrupoController {
 
@@ -51,8 +53,8 @@ public class GrupoController {
     private Integer obtenerIdMaestro(HttpServletRequest request) {
         String token = cookieUtil.extractTokenFromCookie(request);
         if (token == null || token.trim().isEmpty()) {
-            // Si no hay token, se puede lanzar una excepción o devolver null para que
-            // luego el controlador redirija a login. Aquí decidimos devolver null.
+            // Si no hay token, devuelve null para que
+            // luego el controlador redirija a login.
             return null;
         }
         String correoMaestro = jwtUtil.extractUsername(token);
@@ -63,21 +65,26 @@ public class GrupoController {
     @GetMapping("/grupos/info/{id}")
     public String mostrarInfoGrupo(@PathVariable Integer id, HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "10") int size) {
+
+        log.info("Solicitud para mostrar información del grupo ID {}", id);
         // Extraer el id del maestro autenticado a partir del token en la cookie
         Integer idMaestroAutenticado = obtenerIdMaestro(request);
         if (idMaestroAutenticado == null) {
+            log.warn("Sesión expirada. Redirigiendo al login.");
             return "redirect:/login?sessionExpired=true";
         }
+
 
         // Buscar el grupo por su id
         Grupo grupo = grupoService.buscarPorId(id);
         if (grupo == null) {
+            log.error("Grupo con ID {} no encontrado. Redirigiendo al índice.", id);
             return "redirect:/index"; // Redirigir si el grupo no existe
         }
 
         // Comprobar si el grupo pertenece al maestro autenticado
         if (!grupo.getMaestro().getIdMaestro().equals(idMaestroAutenticado)) {
-            // Se podría redirigir a una página de error o simplemente a la lista de grupos
+            log.warn("Acceso denegado: El maestro ID {} no tiene acceso al grupo ID {}. Redirigiendo.", idMaestroAutenticado, id);
             return "redirect:/index?accessDenied=true";
         }
 
@@ -87,12 +94,15 @@ public class GrupoController {
             vista = "estudiantes";   // valor por defecto, por ejemplo, mostrar estudiantes
         }
 
+        log.info("Vista seleccionada: '{}'. Cargando datos correspondientes.", vista);
+
         // Obtener la lista de estudiantes inscritos, a través de la relación en la entidad.
         // Suponiendo que si se está mostrando estudiantes, se utiliza la paginación de estudiantes. Si está mostrando trabajos, se muestra paginación de trabajos.
         if ("estudiantes".equals(vista)) {
             Pageable pageable = PageRequest.of(page, size);
             // Usar el metodo paginado
             Page<Estudiante> estudiantesPage = estudianteService.obtenerEstudiantesPorGrupoYMaestroPag(id, grupo.getMaestro().getIdMaestro(), pageable);
+            log.info("Se encontraron {} estudiantes en el grupo ID {}", estudiantesPage.getTotalElements(), id);
             model.addAttribute("estudiantesPage", estudiantesPage);
         }
 
@@ -101,6 +111,7 @@ public class GrupoController {
             // Para trabajos, usar también paginación:
             Pageable pageable = PageRequest.of(page, size);
             Page<Trabajo> trabajosPage = trabajoService.obtenerTrabajosPorGrupoPag(id, pageable);
+            log.info("Se encontraron {} trabajos en el grupo ID {}", trabajosPage.getTotalElements(), id);
             model.addAttribute("trabajosPage", trabajosPage);
         }
 

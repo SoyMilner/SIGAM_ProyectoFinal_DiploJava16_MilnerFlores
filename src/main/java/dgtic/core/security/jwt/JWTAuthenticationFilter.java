@@ -44,15 +44,4 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-//    private String extractTokenFromCookie(HttpServletRequest request) {
-//        if (request.getCookies() != null) {
-//            for (Cookie cookie : request.getCookies()) {
-//                if ("JWT".equals(cookie.getName())) {
-//                    return cookie.getValue();
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
 }

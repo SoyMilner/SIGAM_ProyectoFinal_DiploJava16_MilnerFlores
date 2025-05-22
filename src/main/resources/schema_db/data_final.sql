@@ -2,9 +2,9 @@ USE sigam_database;
 
 -- 1. Maestros (3) Contraseña: password
 INSERT INTO Maestro (Nombre, Apellido_Paterno, Apellido_Materno, Correo, Contrasena) VALUES
-('Irma',    'Pérez',    'Varela',      'irma.perez@email.com',    '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
-('Milner',  'Flores',   'Hilerio',       'milner.flores@email.com', '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
-('Dalina',  'Flores',  'Vega',          'dalina.flores@email.com','$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q');
+('Milner',    'Flores',    'Guzmán',      'milner.flores@email.com',    '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
+('Irma',  'Pérez',   'Ramírez',       'irma.perez@email.com', '$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q'),
+('Dalina',  'López',  'Vega',          'dalina.lopez@email.com','$2a$11$bgqBLk77U1VlGdEknAPWE.LOCDccrXloRGftIN4woXfguesXpen2q');
 
 -- 2. Asignaturas (6)
 INSERT INTO Asignatura (Nombre_Asignatura, Descripcion) VALUES
@@ -18,15 +18,15 @@ INSERT INTO Asignatura (Nombre_Asignatura, Descripcion) VALUES
 -- 3. Grupos (3 por maestro)
 -- Irma: Español y Literatura
 INSERT INTO Grupo (Nombre_Grupo, ID_Maestro, ID_Asignatura) VALUES
-('301', 1, 1),  -- Irma → Español
-('302', 1, 3),  -- Irma → Literatura
-('303', 1, 1);  -- Irma → Español (segundo grupo)
+('301', 1, 1),  -- Milner → Español
+('302', 1, 3),  -- Milner → Literatura
+('303', 1, 1);  -- Milner → Español (segundo grupo)
 
 -- Milner: Ecuaciones Diferenciales y Circuitos Eléctricos
 INSERT INTO Grupo (Nombre_Grupo, ID_Maestro, ID_Asignatura) VALUES
-('Tercero A', 2, 5),  -- Milner → Ecuaciones Diferenciales
-('Tercero B', 2, 6),  -- Milner → Circuitos Eléctricos
-('Tercero C', 2, 5);  -- Milner → Ecuaciones Diferenciales (otro grupo)
+('Tercero A', 2, 5),  -- Irma → Ecuaciones Diferenciales
+('Tercero B', 2, 6),  -- Irma → Circuitos Eléctricos
+('Tercero C', 2, 5);  -- Irma → Ecuaciones Diferenciales (otro grupo)
 
 -- Dalina: Redacción y Lingüística
 INSERT INTO Grupo (Nombre_Grupo, ID_Maestro, ID_Asignatura) VALUES
